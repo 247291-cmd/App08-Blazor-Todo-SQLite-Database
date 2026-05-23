@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add task list with real-time DB sync
+## feat: add inline edit mode for tasks
 
-Commit #17
+Commit #18
