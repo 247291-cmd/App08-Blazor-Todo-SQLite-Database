@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add Enter key support for adding tasks
+## style: add task count in footer
 
-Commit #28
+Commit #29
