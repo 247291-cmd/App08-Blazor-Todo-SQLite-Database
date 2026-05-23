@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: configure SQLite database provider
+## feat: add Tasks DbSet to context
 
-Commit #4
+Commit #5
