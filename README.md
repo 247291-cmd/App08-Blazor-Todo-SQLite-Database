@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add toggle complete checkbox
+## feat: add delete button per task
 
-Commit #19
+Commit #20
