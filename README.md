@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add TodoDbContext with EF Core
+## feat: add TodoTask entity class
 
-Commit #2
+Commit #3
