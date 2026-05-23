@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add AddAsync method
+## feat: add ToggleAsync method
 
-Commit #8
+Commit #9
