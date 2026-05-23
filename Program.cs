@@ -4,21 +4,38 @@ using App08_TodoDb.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-var dbPath = Path.Combine(builder.Environment.ContentRootPath, "todo.db");
-builder.Services.AddDbContext<TodoDbContext>(o => o.UseSqlite($"Data Source={dbPath}"));
+// Add Blazor services
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+// ── SQL Server Connection ─────────────────────────────────────────────────
+// Connects to: localhost\SQLEXPRESS01 → AutoCareDB database
+builder.Services.AddDbContext<TodoDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddScoped<TodoDbService>();
 
 var app = builder.Build();
 
+// ── Auto-create TodoTasks table if it does not exist ─────────────────────
 using (var scope = app.Services.CreateScope())
-    scope.ServiceProvider.GetRequiredService<TodoDbContext>().Database.EnsureCreated();
+{
+    var db = scope.ServiceProvider.GetRequiredService<TodoDbContext>();
+    db.Database.EnsureCreated();
+}
 
-if (!app.Environment.IsDevelopment()) { app.UseExceptionHandler("/Error", createScopeForErrors: true); app.UseHsts(); }
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseHsts();
+}
+
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
 app.UseAntiforgery();
 app.MapStaticAssets();
-app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+
 app.Run();
