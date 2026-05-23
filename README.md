@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add GetAllAsync method
+## feat: add AddAsync method
 
-Commit #7
+Commit #8
