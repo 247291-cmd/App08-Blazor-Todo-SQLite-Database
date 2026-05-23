@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add UpdateAsync method
+## feat: add DeleteAsync method
 
-Commit #10
+Commit #11
