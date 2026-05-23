@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add delete button per task
+## feat: add Clear All button
 
-Commit #20
+Commit #21
