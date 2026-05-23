@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## style: add gradient input area header
+## feat: add error handling with dismissible alert
 
-Commit #25
+Commit #26
