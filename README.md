@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add ClearAllAsync method
+## feat: register DbContext as scoped service
 
-Commit #12
+Commit #13
