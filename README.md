@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## chore: add gitignore
+## docs: add README for App08
 
-Commit #30
+Commit #31
