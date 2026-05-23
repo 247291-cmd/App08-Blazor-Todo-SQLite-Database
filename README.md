@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: auto-create database with EnsureCreated
+## feat: add TodoDb page component
 
-Commit #15
+Commit #16
