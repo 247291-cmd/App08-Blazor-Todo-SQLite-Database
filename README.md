@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: register DbContext as scoped service
+## feat: register TodoDbService as scoped
 
-Commit #13
+Commit #14
