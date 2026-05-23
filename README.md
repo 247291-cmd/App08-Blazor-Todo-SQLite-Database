@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## style: add dark blue gradient background
+## style: add gradient input area header
 
-Commit #24
+Commit #25
