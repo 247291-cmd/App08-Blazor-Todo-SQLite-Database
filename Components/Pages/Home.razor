@@ -1,0 +1,177 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject App08_TodoDb.Services.TodoDbService TodoService
+
+<PageTitle>To-Do Database</PageTitle>
+
+<div class="min-vh-100" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
+
+                <div class="text-center mb-4">
+                    <h2 class="text-white fw-bold">🗄️ To-Do with Database</h2>
+                    <p class="text-white opacity-75">Powered by SQLite + Entity Framework Core 8</p>
+                </div>
+
+                <div class="card border-0 shadow-lg" style="border-radius:20px; overflow:hidden;">
+
+                    <div class="p-4" style="background:linear-gradient(135deg,#2c3e50,#3498db);">
+                        <div class="input-group" style="border-radius:12px; overflow:hidden;">
+                            <input @bind="newTaskTitle" @bind:event="oninput" @onkeydown="HandleKeyDown"
+                                   class="form-control form-control-lg border-0"
+                                   style="background:rgba(255,255,255,0.15); color:white;"
+                                   placeholder="Add a new task..." />
+                            <button class="btn fw-bold px-4 text-white"
+                                    style="background:rgba(255,255,255,0.25); border:none;"
+                                    @onclick="AddTask"
+                                    disabled="@(string.IsNullOrWhiteSpace(newTaskTitle) || isSaving)">
+                                @(isSaving ? "..." : "+ Add")
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0 bg-white">
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger m-3 rounded-3 border-0">
+                                @errorMessage
+                                <button type="button" class="btn-close float-end" @onclick="@(() => errorMessage = string.Empty)"></button>
+                            </div>
+                        }
+
+                        @if (isLoading)
+                        {
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <p class="mt-3 text-muted">Loading from database...</p>
+                            </div>
+                        }
+                        else if (tasks.Count == 0)
+                        {
+                            <div class="text-center py-5">
+                                <div style="font-size:3.5rem;">🗄️</div>
+                                <p class="text-muted mt-2 fw-semibold">Database is empty</p>
+                                <p class="text-muted small">Add your first task above</p>
+                            </div>
+                        }
+                        else
+                        {
+                            @foreach (var task in tasks)
+                            {
+                                <div class="px-4 py-3 border-bottom d-flex align-items-center gap-3">
+                                    @if (editingTaskId == task.Id)
+                                    {
+                                        <div class="input-group flex-grow-1">
+                                            <input @bind="editTitle" @bind:event="oninput"
+                                                   class="form-control border-0 bg-light" style="border-radius:8px 0 0 8px;" />
+                                            <button class="btn btn-success btn-sm" @onclick="() => SaveEdit(task.Id)">Save</button>
+                                            <button class="btn btn-outline-secondary btn-sm" @onclick="CancelEdit">✕</button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" class="form-check-input mt-0 flex-shrink-0"
+                                               style="width:20px;height:20px;cursor:pointer;"
+                                               checked="@task.IsCompleted" @onchange="() => ToggleTask(task.Id)" />
+                                        <div class="flex-grow-1">
+                                            <span class="@(task.IsCompleted ? "text-decoration-line-through text-muted" : "fw-semibold")">
+                                                @task.Title
+                                            </span>
+                                            <div class="text-muted" style="font-size:0.7rem;">
+                                                ID: @task.Id · @task.CreatedAt.ToLocalTime().ToString("MMM dd, yyyy hh:mm tt")
+                                            </div>
+                                        </div>
+                                        <div class="d-flex gap-1">
+                                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                                                    @onclick="() => StartEdit(task)">Edit</button>
+                                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                                    @onclick="() => DeleteTask(task.Id)">Delete</button>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            <div class="p-3 d-flex gap-2 bg-light">
+                                <button class="btn btn-danger flex-fill rounded-pill fw-semibold" @onclick="ClearAll">
+                                    🗑 Clear All
+                                </button>
+                                <button class="btn btn-outline-secondary flex-fill rounded-pill fw-semibold" @onclick="LoadTasks">
+                                    🔄 Refresh
+                                </button>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="px-4 py-2 d-flex justify-content-between align-items-center"
+                         style="background:#f8f9fa; font-size:0.8rem;">
+                        <span class="text-muted">@tasks.Count task@(tasks.Count == 1 ? "" : "s") in database</span>
+                        <span class="text-muted">SQLite · EF Core 8</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<App08_TodoDb.Data.TodoTask> tasks = new();
+    private string newTaskTitle = "";
+    private string errorMessage = "";
+    private bool isLoading = true;
+    private bool isSaving = false;
+    private int? editingTaskId = null;
+    private string editTitle = "";
+
+    protected override async Task OnInitializedAsync() => await LoadTasks();
+
+    private async Task LoadTasks()
+    {
+        isLoading = true;
+        try { tasks = await TodoService.GetAllAsync(); }
+        catch (Exception ex) { errorMessage = $"Error: {ex.Message}"; }
+        finally { isLoading = false; }
+    }
+
+    private async Task AddTask()
+    {
+        if (string.IsNullOrWhiteSpace(newTaskTitle)) return;
+        isSaving = true;
+        try { await TodoService.AddAsync(newTaskTitle); newTaskTitle = ""; await LoadTasks(); }
+        catch (Exception ex) { errorMessage = $"Error: {ex.Message}"; }
+        finally { isSaving = false; }
+    }
+
+    private async Task ToggleTask(int id)
+    {
+        try { await TodoService.ToggleAsync(id); await LoadTasks(); }
+        catch (Exception ex) { errorMessage = $"Error: {ex.Message}"; }
+    }
+
+    private void StartEdit(App08_TodoDb.Data.TodoTask task) { editingTaskId = task.Id; editTitle = task.Title; }
+
+    private async Task SaveEdit(int id)
+    {
+        if (!string.IsNullOrWhiteSpace(editTitle))
+            try { await TodoService.UpdateAsync(id, editTitle); await LoadTasks(); }
+            catch (Exception ex) { errorMessage = $"Error: {ex.Message}"; }
+        editingTaskId = null;
+    }
+
+    private void CancelEdit() => editingTaskId = null;
+
+    private async Task DeleteTask(int id)
+    {
+        try { await TodoService.DeleteAsync(id); await LoadTasks(); }
+        catch (Exception ex) { errorMessage = $"Error: {ex.Message}"; }
+    }
+
+    private async Task ClearAll()
+    {
+        try { await TodoService.ClearAllAsync(); await LoadTasks(); }
+        catch (Exception ex) { errorMessage = $"Error: {ex.Message}"; }
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e) { if (e.Key == "Enter") await AddTask(); }
+}
