@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add TodoDb page component
+## feat: add task list with real-time DB sync
 
-Commit #16
+Commit #17
