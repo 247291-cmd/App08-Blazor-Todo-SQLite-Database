@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add error handling with dismissible alert
+## feat: add loading spinner while fetching
 
-Commit #26
+Commit #27
