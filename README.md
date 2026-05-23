@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add inline edit mode for tasks
+## feat: add toggle complete checkbox
 
-Commit #18
+Commit #19
