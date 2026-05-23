@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: show task ID and creation timestamp
+## style: add dark blue gradient background
 
-Commit #23
+Commit #24
