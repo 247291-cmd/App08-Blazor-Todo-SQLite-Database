@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: register TodoDbService as scoped
+## feat: auto-create database with EnsureCreated
 
-Commit #14
+Commit #15
