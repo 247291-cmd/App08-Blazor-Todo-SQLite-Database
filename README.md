@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add loading spinner while fetching
+## feat: add Enter key support for adding tasks
 
-Commit #27
+Commit #28
