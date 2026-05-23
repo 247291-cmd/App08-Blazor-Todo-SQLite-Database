@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## style: add task count in footer
+## chore: add gitignore
 
-Commit #29
+Commit #30
