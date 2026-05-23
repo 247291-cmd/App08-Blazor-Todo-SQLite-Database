@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add Refresh from DB button
+## feat: show task ID and creation timestamp
 
-Commit #22
+Commit #23
