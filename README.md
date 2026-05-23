@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add Tasks DbSet to context
+## feat: add TodoDbService class
 
-Commit #5
+Commit #6
