@@ -1,5 +1,5 @@
 ﻿# App08-Blazor-Todo-SQLite-Database
 
-## feat: add Clear All button
+## feat: add Refresh from DB button
 
-Commit #21
+Commit #22
