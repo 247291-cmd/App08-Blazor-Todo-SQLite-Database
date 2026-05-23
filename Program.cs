@@ -5,25 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Blazor services
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// ── SQL Server Connection ─────────────────────────────────────────────────
-// Connects to: localhost\SQLEXPRESS01 → AutoCareDB database
+// SQL Server - AutoCareDB on localhost\SQLEXPRESS01
 builder.Services.AddDbContext<TodoDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<TodoDbService>();
 
 var app = builder.Build();
-
-// ── Auto-create TodoTasks table if it does not exist ─────────────────────
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<TodoDbContext>();
-    db.Database.EnsureCreated();
-}
 
 if (!app.Environment.IsDevelopment())
 {
